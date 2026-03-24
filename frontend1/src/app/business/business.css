@@ -1,0 +1,41 @@
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+  box-shadow: 0 12px 22px rgba(255, 45, 45, 0.24);
+}
+.menu-label {
+  margin: 18px 0 10px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+.nav-menu {
+  display: grid;
+  gap: 8px;
+}
+.nav-menu a {
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+}
+.nav-menu a:hover {
+  background: linear-gradient(135deg, rgba(255, 45, 45, 0.16), rgba(255, 75, 75, 0.08));
+  border-color: rgba(255, 45, 45, 0.22);
+}
