@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GLOW  - ASISTENTE DIGITAL DEL NEGOCIO</title>
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --card:#121217;
+      --text:#f3f4f6;
+      --muted:#a1a1aa;
+      --red:#ff2d2d;
+      --red2:#ff4b4b;
+      --line:#24242d;
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size:17px;
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(255,45,45,.18), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,45,45,.10), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .wrap{ width:min(460px, 100%); }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px; gap:10px;
+    }
+    .brand{ display:flex; align-items:center; gap:10px; }
+    .dot{
+      width:12px;height:12px;border-radius:999px;
+      background:linear-gradient(135deg, var(--red), var(--red2));
+      box-shadow: 0 0 0 6px rgba(255,45,45,.12);
+    }
+    .title{ font-weight:800; letter-spacing:.2px; font-size:21px; line-height:1.1; }
+    .subtitle{ color:var(--muted); font-size:14px; margin-top:2px; }
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:14px;
+      color:var(--muted);
+      white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .online-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 0 3px rgba(34,197,94,.18);
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .assistant{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex; gap:12px; align-items:flex-start;
+      background:linear-gradient(180deg, rgba(255,45,45,.08), transparent 70%);
+    }
+    .avatar{
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg, rgba(255,45,45,.95), rgba(255,75,75,.85));
+      display:grid;place-items:center;
+      font-weight:900;
+      box-shadow: 0 10px 24px rgba(255,45,45,.25);
+      flex:0 0 auto;
+    }
+    .bubble{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:12px;
+      width:100%;
+      font-size:18px;
+      line-height:1.4;
+    }
+    .bubble .small{ margin-top:6px; color:var(--muted); font-size:14px; }
+    .actions{
+      padding:12px 12px 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      background:rgba(0,0,0,.18);
+      border-bottom:1px solid var(--line);
+    }
+    .actions.offers-mode{ grid-template-columns: 1fr; }
+    .quick-offer{
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:10px 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+    .quick-offer-name{ font-weight:800; font-size:15px; }
+    .quick-offer-note{ color:var(--muted); font-size:14px; margin-top:2px; }
+    .quick-offer-name{
+      font-size:20px;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+    .actions.offers-mode .price{
+      font-size:18px;
+      padding:8px 12px;
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:16px;
+      padding:12px 10px;
+      cursor:pointer;
+      text-align:left;
+      transition: transform .06s ease, border-color .2s ease, background .2s ease;
+      min-height:64px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .btn:active{transform: scale(.98)}
+    .btn:hover{border-color: rgba(255,45,45,.35); background:rgba(255,45,45,.06);}
+    .ic{
+      width:34px;height:34px;border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      display:grid;place-items:center;
+      flex:0 0 auto;
+    }
+    .btn .t{ font-weight:800; font-size:15px; line-height:1.15; }
+    .btn .d{ color:var(--muted); font-size:13px; margin-top:4px; line-height:1.2; }
+    .btn.primary .ic{ background:rgba(255,45,45,.10); border-color: rgba(255,45,45,.35); }
+    .btn.primary{ border-color: rgba(255,45,45,.35); background:rgba(255,45,45,.06); }
+    .btn.chat-cta{
+      border-color: rgba(255,45,45,.55);
+      background: linear-gradient(135deg, rgba(255,45,45,.22), rgba(255,75,75,.14));
+      box-shadow: 0 10px 20px rgba(255,45,45,.16);
+    }
+    .btn.chat-cta .t{
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .btn.chat-cta .d{
+      color:#d7d9e4;
+      font-weight:700;
+    }
+    .panel{ padding:14px 14px 16px; }
+    .panelhead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .paneltitle{ font-weight:900; letter-spacing:.2px; font-size:16px; }
+    .back{
+      display:none;
+      border:none;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .content{
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:12px;
+    }
+    .hint{ color:var(--muted); font-size:14px; line-height:1.45; margin:0; }
+    .home-brand{ text-align:center; }
+    .mini-chat{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .chat-box{
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:12px;
+      padding:10px;
+      min-height:160px;
+      max-height:220px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .chat-msg{
+      max-width:88%;
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:14px;
+      line-height:1.35;
+      white-space:pre-wrap;
+    }
+    .chat-msg.bot{
+      align-self:flex-start;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.03);
+    }
+    .chat-msg.user{
+      align-self:flex-end;
+      border:1px solid rgba(255,45,45,.30);
+      background:rgba(255,45,45,.12);
+    }
+    .chat-controls{
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      gap:8px;
+    }
+    .chat-controls input{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:10px;
+      padding:9px 10px;
+      font-size:14px;
+    }
+    .chat-controls button{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:10px;
+      padding:9px 10px;
+      font-size:14px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    .chat-controls .send{
+      border-color: rgba(255,45,45,.35);
+      background:rgba(255,45,45,.12);
+    }
+    .form-stack{
+      display:grid;
+      gap:10px;
+    }
+    .field{
+      display:grid;
+      gap:6px;
+    }
+    .field label{
+      font-size:12px;
+      font-weight:800;
+      color:#e4e4e7;
+    }
+    .field input{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:12px;
+      padding:11px 12px;
+      font-size:15px;
+      outline:none;
+    }
+    .field input:focus{
+      border-color: rgba(255,45,45,.45);
+      box-shadow:0 0 0 3px rgba(255,45,45,.10);
+    }
+    .form-msg{
+      min-height:18px;
+      font-size:12px;
+      font-weight:700;
+      color:#fca5a5;
+    }
+    .terms-box{
+      display:grid;
+      gap:10px;
+      color:#d4d4d8;
+      font-size:12px;
+      line-height:1.5;
+    }
+    .terms-box b{
+      color:#fff;
+    }
+    .win-banner{
+      margin:0 0 10px;
+      text-align:center;
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:.4px;
+      line-height:1.05;
+      color:#22c55e;
+      text-shadow:0 0 18px rgba(34,197,94,.35);
+    }
+    .roulette-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+    .roulette-wheel{
+      width:190px;
+      height:190px;
+      border-radius:999px;
+      border:8px solid rgba(255,255,255,.09);
+      background:conic-gradient(
+        #ff2d2d 0 25%,
+        #1a1a20 25% 50%,
+        #ff2d2d 50% 75%,
+        #1a1a20 75% 100%
+      );
+      box-shadow:0 18px 34px rgba(0,0,0,.35);
+      position:relative;
+      transition:transform 3s cubic-bezier(.08,.78,.12,1);
+    }
+    .roulette-wheel::after{
+      content:"G";
+      position:absolute;
+      inset:34%;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.2);
+      display:grid;
+      place-items:center;
+      color:#fff;
+      font-weight:900;
+      font-size:34px;
+      letter-spacing:.04em;
+      text-shadow:0 10px 20px rgba(0,0,0,.35);
+    }
+    .roulette-pointer{
+      width:0;
+      height:0;
+      border-left:12px solid transparent;
+      border-right:12px solid transparent;
+      border-bottom:22px solid var(--red);
+      margin-bottom:-8px;
+    }
+    .roulette-btn{
+      border:1px solid rgba(255,45,45,.35);
+      background:rgba(255,45,45,.10);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .list{
+      margin:0; padding:0; list-style:none;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .item{
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:10px 12px;
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+    }
+    .item .name{ font-weight:800; font-size:15px; }
+    .item .meta{ color:var(--muted); font-size:14px; margin-top:2px; }
+    .price{
+      font-weight:900;
+      background:rgba(255,45,45,.12);
+      border:1px solid rgba(255,45,45,.30);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+      font-size:14px;
+    }
+    .cta{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+    .cta a{
+      text-decoration:none;
+      color:#fff;
+      font-weight:900;
+      font-size:15px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      flex:1 1 auto;
+      justify-content:center;
+    }
+    .cta a.primary{
+      background:linear-gradient(135deg, rgba(255,45,45,.95), rgba(255,75,75,.85));
+      border-color: rgba(255,45,45,.25);
+      box-shadow: 0 12px 26px rgba(255,45,45,.18);
+    }
+    .foot{ margin-top:10px; color:rgba(161,161,170,.75); font-size:11px; text-align:center; }
+    #confettiLayer{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:9999;
+    }
+    .confetti-piece{
+      position:absolute;
+      top:-14px;
+      width:10px;
+      height:14px;
+      opacity:.95;
+      animation:confetti-fall 3s linear forwards;
+      transform:translate(0,0) rotate(0deg);
+      will-change:transform, opacity;
+    }
+    @keyframes confetti-fall{
+      to{
+        transform:translate(var(--dx), 110vh) rotate(720deg);
+        opacity:0;
+      }
+    }
+    @media (max-width:420px){
+      .actions{ grid-template-columns:1fr; }
+      .btn{ min-height:56px; }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const BUSINESS_NAME = "GLOW";
+    const WHATSAPP_NUMBER = "2345421181";
+    const MAPS_LINK = "https://maps.google.com";
+    const OFFERS = [
+      { name: "Producto 1", note: "Oferta destacada", price: "$9.900" },
+      { name: "Producto 2", note: "Oferta destacada", price: "$14.500" },
+      { name: "Producto 3", note: "Oferta destacada", price: "$6.750" },
+      { name: "Producto 4", note: "Oferta destacada", price: "$11.200" },
+      { name: "Producto 5", note: "Oferta destacada", price: "$18.900" },
+      { name: "Producto 6", note: "Oferta destacada", price: "$7.500" },
+      { name: "Producto 7", note: "Oferta destacada", price: "$13.990" },
+      { name: "Producto 8", note: "Oferta destacada", price: "$21.400" },
+      { name: "Producto 9", note: "Oferta destacada", price: "$5.990" },
+      { name: "Producto 10", note: "Oferta destacada", price: "$16.800" }
+    ];
+    const SCHEDULE = [
+      { day: "Lunes a Viernes", time: "08:00 a 20:00" },
+      { day: "Sabados", time: "09:00 a 18:00" },
+      { day: "Domingos", time: "09:00 a 13:00" }
+    ];
+    const SERVICES = [
+      { name: "Corte clasico", note: "Servicio principal" },
+      { name: "Coloracion", note: "Con reserva previa" },
+      { name: "Barba y perfilado", note: "Turno rapido" },
+      { name: "Lavado y peinado", note: "Disponible hoy" }
+    ];
+    const PROFESSIONALS = [
+      { name: "Ana Lopez", note: "Colorista" },
+      { name: "Marcos Diaz", note: "Barbero" },
+      { name: "Lucia Perez", note: "Estilista" }
+    ];
+    const APPOINTMENT_OPTIONS = [
+      { name: "Solicitar turno", note: "Reserva por WhatsApp" },
+      { name: "Reprogramar", note: "Cambia fecha y horario" },
+      { name: "Consultar disponibilidad", note: "Agenda del dia" }
+    ];
+    const CATALOG_ITEMS = [
+      { name: "Catalogo general", note: "Productos y servicios" },
+      { name: "Novedades del mes", note: "Destacados actuales" },
+      { name: "Top recomendados", note: "Lo mas consultado" }
+    ];
+    const NEWS_ITEMS = [
+      { name: "Novedad destacada", note: "Resumen corto con fuente y fecha" },
+      { name: "Aviso importante", note: "Comunicado o informacion de utilidad" },
+      { name: "Contenido destacado", note: "Espacio para noticias o avisos patrocinados" }
+    ];
+    const ENABLED_MODULES = [
+      "offers",
+      "raffle",
+      "chat",
+      "terms",
+      "schedule",
+      "play",
+      "location",
+      "whatsapp"
+    ];
+  </script>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="dot"></div>
+        <div>
+          <div class="title">GLOW </div>
+          <div class="subtitle">Asistente digital del negocio</div>
+        </div>
+      </div>
+      <div class="pill"><span class="online-dot"></span>en linea</div>
+    </div>
+
+    <div class="card">
+      <div class="assistant">
+        <div class="avatar">G</div>
+        <div class="bubble">
+          <div><b>HOLA 👋</b> Soy GLOW, asistente digital del negocio.</div>
+          <div class="small"> Ofertas, sorteos y mas</div>
+          <div class="small"><b>Que te gustaria hacer?</b></div>
+        </div>
+      </div>
+
+      <div class="actions" id="actions"></div>
+
+      <div class="panel">
+        <div class="panelhead">
+          <div class="paneltitle" id="panelTitle"></div>
+          <button class="back" id="backBtn" onclick="showPanel('home')">Volver</button>
+        </div>
+
+        <div class="content" id="content"></div>
+
+        <div class="foot">simple y rapido</div>
+      </div>
+    </div>
+  </div>
+  <div id="confettiLayer"></div>
+
+  <script>
+    document.title = BUSINESS_NAME;
+
+    const content = document.getElementById("content");
+    const panelTitle = document.getElementById("panelTitle");
+    const backBtn = document.getElementById("backBtn");
+    const panel = document.querySelector(".panel");
+    const actions = document.getElementById("actions");
+    const ROULETTE_PRIZES = [
+      { label: "PREMIO SORPRESA", win: true },
+      { label: "PREMIO SORPRESA", win: true },
+      { label: "PREMIO", win: true },
+      { label: "Gracias por participar", win: false }
+    ];
+    const CHAT_API_URL = "https://glow-demo.onrender.com/api/chat";
+    const CHAT_TIMEOUT_MS = 9000;
+    let chatStarted = false;
+    let rouletteSpinning = false;
+    let apiOnline = null;
+    const MODULE_BUTTONS = {
+      offers: { title: "Ver ofertas", desc: "Promos activas", icon: "OF", action: "showOffersQuick()", primary: true },
+      raffle: { title: "Participar sorteo", desc: "Sorteo ultimo sabado de cada mes", icon: "SO", action: "showRaffleQuick()" },
+      chat: { title: "Chatear con Glow", desc: "Toca aca y pregunta ahora", icon: "CH", action: "showChatQuick()", className: "chat-cta" },
+      terms: { title: "Bases y condiciones", desc: "Terminos del sorteo", icon: "BC", action: "showTermsQuick()" },
+      schedule: { title: "Horarios", desc: "Dias y apertura", icon: "HS", action: "showScheduleQuick()" },
+      play: { title: "Jugar", desc: "Girar Glow", icon: "JG", action: "showRouletteQuick()" },
+      services: { title: "Servicios", desc: "Que ofrece este negocio", icon: "SV", action: "showServicesQuick()" },
+      appointments: { title: "Turnos", desc: "Reserva y agenda", icon: "TU", action: "showAppointmentsQuick()" },
+      professionals: { title: "Profesionales", desc: "Equipo disponible", icon: "PR", action: "showProfessionalsQuick()" },
+      catalogs: { title: "Catalogos", desc: "Listas y destacados", icon: "CA", action: "showCatalogsQuick()" },
+      news: { title: "Noticias y avisos", desc: "Novedades destacadas", icon: "NV", action: "showNewsQuick()" },
+      location: { title: "Ubicacion", desc: "Como llegar", icon: "MP", action: "showLocationQuick()" },
+      whatsapp: { title: "WhatsApp", desc: "Consulta rapida", icon: "WA", action: "showWhatsappQuick()" }
+    };
+
+    function waLink(){ return "https://wa.me/" + WHATSAPP_NUMBER; }
+    function waPrefillLink(text){
+      return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+    }
+    function focusPanel(){
+      if(panel){
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    function saveRaffleEntry(name, phone){
+      const fullName = String(name || "").trim();
+      const cleanPhone = String(phone || "").replace(/\D/g, "");
+      const entry = {
+        fullName,
+        phone: cleanPhone,
+        createdAt: new Date().toISOString()
+      };
+      try{
+        const key = "glow_raffle_entries";
+        const current = JSON.parse(localStorage.getItem(key) || "[]");
+        current.unshift(entry);
+        localStorage.setItem(key, JSON.stringify(current.slice(0, 200)));
+      }catch(_err){
+        return { ok: false, message: "No se pudo guardar la participacion en este dispositivo." };
+      }
+      return { ok: true, message: "Participacion registrada. Queda lista para verse en el futuro panel admin." };
+    }
+    function registerGlowSpin(phone){
+      const cleanPhone = String(phone || "").replace(/\D/g, "");
+      if(cleanPhone.length < 10){
+        return { ok: false, message: "Ingresa un WhatsApp valido para girar Glow." };
+      }
+      const now = new Date();
+      const gameDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+      const entry = { phone: cleanPhone, gameDate, createdAt: now.toISOString() };
+      try{
+        const key = "glow_daily_spins";
+        const current = JSON.parse(localStorage.getItem(key) || "[]");
+        const alreadyPlayed = current.some((item) => item.phone === cleanPhone && item.gameDate === gameDate);
+        if(alreadyPlayed){
+          return { ok: false, message: "Ya usaste tu giro de hoy. Volve manana para Girar Glow otra vez." };
+        }
+        current.unshift(entry);
+        localStorage.setItem(key, JSON.stringify(current.slice(0, 300)));
+      }catch(_err){
+        return { ok: false, message: "No se pudo validar el giro en este dispositivo." };
+      }
+      return { ok: true, message: "WhatsApp validado. Girar Glow habilitado." };
+    }
+    function renderRaffle(){
+      content.innerHTML = `
+        <div class="form-stack">
+          <p class="hint">Completa tus datos para participar del sorteo. La informacion quedara lista para verse luego en el panel admin.</p>
+          <div class="field">
+            <label for="raffleName">Nombre</label>
+            <input id="raffleName" type="text" placeholder="Ej: Juan" />
+          </div>
+          <div class="field">
+            <label for="raffleLastName">Apellido</label>
+            <input id="raffleLastName" type="text" placeholder="Ej: Perez" />
+          </div>
+          <div class="field">
+            <label for="rafflePhone">WhatsApp</label>
+            <input id="rafflePhone" type="tel" placeholder="Ej: 2345123456" />
+          </div>
+          <div class="form-msg" id="raffleMsg"></div>
+        </div>
+        <div class="cta">
+          <a href="#" class="primary" id="raffleSubmit">Participar por WhatsApp</a>
+          <a href="#" onclick="showPanel('bases'); return false;">Ver bases y condiciones</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+
+      const submit = document.getElementById("raffleSubmit");
+      if(!submit) return;
+      submit.addEventListener("click", (e) => {
+        e.preventDefault();
+        const name = String(document.getElementById("raffleName")?.value || "").trim();
+        const lastname = String(document.getElementById("raffleLastName")?.value || "").trim();
+        const phone = String(document.getElementById("rafflePhone")?.value || "").trim();
+        const cleanPhone = phone.replace(/\D/g, "");
+        const msg = document.getElementById("raffleMsg");
+
+        if(!name || !lastname){
+          if(msg) msg.textContent = "Ingresa nombre y apellido para continuar.";
+          return;
+        }
+        if(cleanPhone.length < 10){
+          if(msg) msg.textContent = "Ingresa un WhatsApp valido.";
+          return;
+        }
+        if(msg) msg.textContent = "";
+        openSorteoWhatsapp(name, lastname, cleanPhone);
+      });
+    }
+    function renderTerms(){
+      content.innerHTML = `
+        <div class="terms-box">
+          <p><b>Bases y condiciones del sorteo</b></p>
+          <p>1. La participacion es personal y requiere nombre, apellido y numero de WhatsApp valido.</p>
+          <p>2. Se acepta una participacion por persona, salvo que el comercio indique otra condicion.</p>
+          <p>3. El sorteo se realiza el ultimo sabado de cada mes entre los participantes registrados.</p>
+          <p>4. El premio no es canjeable por dinero en efectivo.</p>
+          <p>5. El comercio puede verificar datos y anular participaciones duplicadas o con informacion falsa.</p>
+        </div>
+        <div class="cta">
+          <a class="primary" href="#" onclick="showPanel('sorteo'); return false;">Ir a participar</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+    }
+    function renderActionButtons(){
+      if(!actions) return;
+      actions.className = "actions";
+      actions.innerHTML = ENABLED_MODULES
+        .map((key) => {
+          const item = MODULE_BUTTONS[key];
+          if(!item) return "";
+          const classes = ["btn"];
+          if(item.primary) classes.push("primary");
+          if(item.className) classes.push(item.className);
+          return `
+            <button class="${classes.join(" ")}" onclick="${item.action}">
+              <div class="ic">${item.icon}</div>
+              <div>
+                <div class="t">${item.title}</div>
+                <div class="d">${item.desc}</div>
+              </div>
+            </button>
+          `;
+        })
+        .join("");
+    }
+    function restoreActions(){
+      if(!actions) return;
+      renderActionButtons();
+    }
+    function showOffersQuick(){
+      if(!actions) return;
+      const items = OFFERS.map(o => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(o.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(o.note || "")}</div>
+          </div>
+          <div class="price">${escapeHtml(o.price)}</div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showRaffleQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <div class="form-stack">
+            <p class="hint">Completa tus datos para participar del sorteo. </p>
+            <div class="field">
+            <label for="raffleNameQuick">Nombre y apellido</label>
+            <input id="raffleNameQuick" type="text" placeholder="Ej: Juan Perez" />
+            </div>
+            <div class="field">
+              <label for="rafflePhoneQuick">WhatsApp</label>
+              <input id="rafflePhoneQuick" type="tel" placeholder="Ej: 2345123456" />
+            </div>
+            <div class="form-msg" id="raffleMsgQuick"></div>
+          </div>
+        </div>
+        <button class="btn primary" onclick="submitRaffleQuick()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Registrar participacion</div>
+            <div class="d">Guardar datos del sorteo</div>
+          </div>
+        </button>
+        <button class="btn" onclick="showTermsQuick()">
+          <div class="ic">BC</div>
+          <div>
+            <div class="t">Bases y condiciones</div>
+            <div class="d">Leer terminos del sorteo</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function submitRaffleQuick(){
+      const name = String(document.getElementById("raffleNameQuick")?.value || "").trim();
+      const phone = String(document.getElementById("rafflePhoneQuick")?.value || "").trim();
+      const cleanPhone = phone.replace(/\D/g, "");
+      const msg = document.getElementById("raffleMsgQuick");
+
+      if(!name){
+        if(msg) msg.textContent = "Ingresa tu nombre para continuar.";
+        return;
+      }
+      if(cleanPhone.length < 10){
+        if(msg) msg.textContent = "Ingresa un WhatsApp valido.";
+        return;
+      }
+      const result = saveRaffleEntry(name, cleanPhone);
+      if(msg) msg.textContent = result.message;
+      if(result.ok){
+        const nameInput = document.getElementById("raffleNameQuick");
+        const phoneInput = document.getElementById("rafflePhoneQuick");
+        if(nameInput) nameInput.value = "";
+        if(phoneInput) phoneInput.value = "";
+      }
+    }
+    function showTermsQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <div class="terms-box">
+            <p><b>Bases y condiciones del sorteo</b></p>
+            <p>1. La participacion es personal y requiere nombre, apellido y numero de WhatsApp valido.</p>
+            <p>2. Se acepta una participacion por persona, salvo que el comercio indique otra condicion.</p>
+            <p>3. El sorteo se realiza el ultimo sabado de cada mes entre los participantes registrados.</p>
+            <p>4. El premio no es canjeable por dinero en efectivo.</p>
+            <p>5. El comercio puede verificar datos y anular participaciones duplicadas o con informacion falsa.</p>
+          </div>
+        </div>
+        <button class="btn primary" onclick="showRaffleQuick()">
+          <div class="ic">SO</div>
+          <div>
+            <div class="t">Ir a participar</div>
+            <div class="d">Completar datos del sorteo</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showScheduleQuick(){
+      if(!actions) return;
+      const items = SCHEDULE.map(s => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(s.day)}</div>
+            <div class="quick-offer-note">Horario de atencion</div>
+          </div>
+          <div class="price">${escapeHtml(s.time)}</div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showWhatsappQuick()">
+          <div class="ic">WA</div>
+          <div>
+            <div class="t">Consultar por WhatsApp</div>
+            <div class="d">Horario especial o feriados</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showServicesQuick(){
+      if(!actions) return;
+      const items = SERVICES.map((item) => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(item.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(item.note)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showWhatsappQuick()">
+          <div class="ic">WA</div>
+          <div>
+            <div class="t">Consultar servicio</div>
+            <div class="d">Seguimos por WhatsApp</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showAppointmentsQuick(){
+      if(!actions) return;
+      const items = APPOINTMENT_OPTIONS.map((item) => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(item.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(item.note)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showWhatsappQuick()">
+          <div class="ic">TU</div>
+          <div>
+            <div class="t">Pedir turno</div>
+            <div class="d">Abrir canal de reserva</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showProfessionalsQuick(){
+      if(!actions) return;
+      const items = PROFESSIONALS.map((item) => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(item.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(item.note)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showAppointmentsQuick()">
+          <div class="ic">TU</div>
+          <div>
+            <div class="t">Solicitar turno</div>
+            <div class="d">Elegi profesional y horario</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showCatalogsQuick(){
+      if(!actions) return;
+      const items = CATALOG_ITEMS.map((item) => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(item.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(item.note)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showWhatsappQuick()">
+          <div class="ic">WA</div>
+          <div>
+            <div class="t">Pedir catalogo</div>
+            <div class="d">Recibir mas detalle</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showNewsQuick(){
+      if(!actions) return;
+      const items = NEWS_ITEMS.map((item) => `
+        <div class="quick-offer">
+          <div>
+            <div class="quick-offer-name">${escapeHtml(item.name)}</div>
+            <div class="quick-offer-note">${escapeHtml(item.note)}</div>
+          </div>
+        </div>
+      `).join("");
+
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        ${items}
+        <button class="btn primary" onclick="showWhatsappQuick()">
+          <div class="ic">NV</div>
+          <div>
+            <div class="t">Ver mas info</div>
+            <div class="d">Continuar por WhatsApp</div>
+          </div>
+        </button>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showWhatsappQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <p class="hint">Toca el boton para abrir WhatsApp y consultar por stock, horarios, delivery o promociones.</p>
+        </div>
+        <a class="btn primary" href="${waLink()}" target="_blank" rel="noopener">
+          <div class="ic">WA</div>
+          <div>
+            <div class="t">Abrir WhatsApp</div>
+            <div class="d">Consulta rapida</div>
+          </div>
+        </a>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showLocationQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <p class="hint">Toca "Abrir Maps" para ver la ubicacion y como llegar al negocio.</p>
+        </div>
+        <a class="btn primary" href="${MAPS_LINK}" target="_blank" rel="noopener">
+          <div class="ic">MP</div>
+          <div>
+            <div class="t">Abrir Maps</div>
+            <div class="d">Ver ubicacion</div>
+          </div>
+        </a>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+    }
+    function showChatQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <div class="mini-chat">
+            <div class="chat-box" id="chatBox"></div>
+            <div class="chat-controls">
+              <input id="chatInput" type="text" placeholder="Escribi tu consulta..." />
+              <button class="send" id="chatSendBtn" type="button">Enviar</button>
+              <button id="chatResetBtn" type="button">Reiniciar chat</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+
+      const sendBtn = document.getElementById("chatSendBtn");
+      const resetBtn = document.getElementById("chatResetBtn");
+      const chatInput = document.getElementById("chatInput");
+      if(sendBtn) sendBtn.addEventListener("click", sendMiniChat);
+      if(resetBtn) resetBtn.addEventListener("click", resetMiniChat);
+      if(chatInput){
+        chatInput.addEventListener("keydown", (e) => {
+          if(e.key === "Enter"){
+            e.preventDefault();
+            sendMiniChat();
+          }
+        });
+      }
+      if(!chatStarted) resetMiniChat();
+    }
+    function showRouletteQuick(){
+      if(!actions) return;
+      actions.classList.add("offers-mode");
+      actions.innerHTML = `
+        <div class="quick-offer" style="display:block">
+          <div class="form-stack" style="margin-bottom:12px">
+            <p class="hint">Ingresa tu WhatsApp para girar Glow. Lo usamos para validar una jugada por dia y avisarte si ganas.</p>
+            <div class="field">
+              <label for="glowSpinPhoneQuick">WhatsApp</label>
+              <input id="glowSpinPhoneQuick" type="tel" placeholder="Ej: 2345123456" />
+            </div>
+          </div>
+          <div class="roulette-wrap">
+            <div class="roulette-pointer"></div>
+            <div class="roulette-wheel" id="rouletteWheel"></div>
+            <button class="roulette-btn" id="rouletteSpinBtn">Girar Glow</button>
+            <p class="hint" id="rouletteResult">Ingresa tu WhatsApp y despues toca "Girar Glow".</p>
+          </div>
+        </div>
+        <button class="btn" onclick="restoreActions()">
+          <div class="ic">OK</div>
+          <div>
+            <div class="t">Volver</div>
+            <div class="d">Menu principal</div>
+          </div>
+        </button>
+      `;
+
+      const wheel = document.getElementById("rouletteWheel");
+      const spinBtn = document.getElementById("rouletteSpinBtn");
+      const resultEl = document.getElementById("rouletteResult");
+      const phoneInput = document.getElementById("glowSpinPhoneQuick");
+      if(!wheel || !spinBtn || !resultEl || !phoneInput) return;
+
+      spinBtn.onclick = () => {
+        if(rouletteSpinning) return;
+        const gate = registerGlowSpin(phoneInput.value);
+        if(!gate.ok){
+          resultEl.textContent = gate.message;
+          return;
+        }
+        rouletteSpinning = true;
+        spinBtn.disabled = true;
+        resultEl.textContent = "Girar Glow en curso...";
+
+        const index = Math.floor(Math.random() * ROULETTE_PRIZES.length);
+        const prize = ROULETTE_PRIZES[index];
+        const sectorSize = 360 / ROULETTE_PRIZES.length;
+        const min = index * sectorSize + 8;
+        const max = (index + 1) * sectorSize - 8;
+        const landing = min + Math.random() * (max - min);
+        const turns = 6 + Math.floor(Math.random() * 2);
+        const finalDeg = turns * 360 + (360 - landing);
+        wheel.style.transform = `rotate(${finalDeg}deg)`;
+
+        setTimeout(() => {
+          if(prize.win){
+            resultEl.innerHTML = `<b>GANASTE: ${escapeHtml(prize.label)}</b>`;
+            launchConfetti();
+          } else {
+            resultEl.textContent = "Gracias por participar. Intentalo de nuevo.";
+          }
+          spinBtn.disabled = false;
+          rouletteSpinning = false;
+          phoneInput.value = "";
+        }, 3200);
+      };
+    }
+
+    function renderOffers(){
+      const items = OFFERS.map(o => `
+        <li class="item">
+          <div>
+            <div class="name">${escapeHtml(o.name)}</div>
+            <div class="meta">${escapeHtml(o.note || "")}</div>
+          </div>
+          <div class="price">${escapeHtml(o.price)}</div>
+        </li>
+      `).join("");
+
+      content.innerHTML = `
+        <ul class="list">${items}</ul>
+        <div class="cta">
+          <a class="primary" href="${waLink()}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+    }
+
+    function renderSchedule(){
+      const items = SCHEDULE.map(s => `
+        <li class="item">
+          <div>
+            <div class="name">${escapeHtml(s.day)}</div>
+            <div class="meta">Horario de atencion</div>
+          </div>
+          <div class="price">${escapeHtml(s.time)}</div>
+        </li>
+      `).join("");
+
+      content.innerHTML = `
+        <ul class="list">${items}</ul>
+        <div class="cta">
+          <a class="primary" href="${waLink()}" target="_blank" rel="noopener">Consultar horario especial</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+    }
+
+    function renderWhatsapp(){
+      content.innerHTML = `
+        <p class="hint">
+          Toca el boton para abrir WhatsApp y consultar por stock, horarios o delivery.
+        </p>
+        <div class="cta">
+          <a class="primary" href="${waLink()}" target="_blank" rel="noopener">Abrir WhatsApp</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+    }
+
+    function renderLocation(){
+      content.innerHTML = `
+        <p class="hint">
+          Toca "Abrir Maps" para ver la ubicacion y como llegar.
+        </p>
+        <div class="cta">
+          <a class="primary" href="${MAPS_LINK}" target="_blank" rel="noopener">Abrir Maps</a>
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+    }
+
+    function localGlowReply(text){
+      const t = text.toLowerCase();
+      if(/oferta|promo/.test(t)){
+        return "Hoy tenemos promos activas en productos seleccionados. Si queres, te muestro todas las ofertas y precios.";
+      }
+      if(/sorteo|premio|particip/.test(t)){
+        return "El sorteo esta activo. Participas escaneando y dejando tu nombre por WhatsApp.";
+      }
+      if(/turno|reserva|agenda/.test(t)){
+        return "Puedo ayudarte a pedir turno, consultar disponibilidad o reprogramar por WhatsApp.";
+      }
+      if(/servicio|tratamiento|trabajo/.test(t)){
+        return "Te muestro los servicios disponibles y despues seguimos por WhatsApp si queres reservar.";
+      }
+      if(/profesional|especialista|tecnico|equipo/.test(t)){
+        return "Puedo mostrarte el equipo disponible y ayudarte a elegir con quien atenderte.";
+      }
+      if(/catalogo|menu|lista/.test(t)){
+        return "Tengo catalogos y destacados para mostrarte dentro del asistente o derivarte por WhatsApp.";
+      }
+      if(/hora|horario|abre/.test(t)){
+        return "Nuestro horario es de Lunes a Viernes 08:00 a 20:00 y Sabados 09:00 a 18:00.";
+      }
+      if(/ubic|donde|direccion/.test(t)){
+        return "Te paso la ubicacion por Maps para que llegues rapido.";
+      }
+      if(/whats|contact|telefono/.test(t)){
+        return "Perfecto. Te contacto por WhatsApp ahora: " + waLink();
+      }
+      return `Entiendo tu consulta: "${text}".\nAhora mismo te puedo ayudar con ofertas, sorteo, horarios, ubicacion y contacto por WhatsApp: ${waLink()}`;
+    }
+
+    async function glowReply(text){
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), CHAT_TIMEOUT_MS);
+      try{
+        const res = await fetch(CHAT_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text }),
+          signal: controller.signal
+        });
+        clearTimeout(timer);
+        if(!res.ok) throw new Error("chat_api_error");
+        const data = await res.json();
+        apiOnline = true;
+        if(data && data.reply && String(data.reply).trim()) return data.reply;
+        return localGlowReply(text);
+      }catch(_err){
+        clearTimeout(timer);
+        apiOnline = false;
+        return localGlowReply(text);
+      }
+    }
+
+    function appendChatMessage(text, who){
+      const box = document.getElementById("chatBox");
+      if(!box) return;
+      const el = document.createElement("div");
+      el.className = "chat-msg " + who;
+      el.textContent = text;
+      box.appendChild(el);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function resetMiniChat(){
+      const box = document.getElementById("chatBox");
+      if(!box) return;
+      box.innerHTML = "";
+      appendChatMessage("Hola! Soy GLOW. Te ayudo con ofertas, sorteos y consultas del negocio.", "bot");
+      appendChatMessage("Tip: para respuestas abiertas de cualquier tema del negocio.", "bot");
+      chatStarted = true;
+    }
+
+    async function sendMiniChat(){
+      const input = document.getElementById("chatInput");
+      if(!input) return;
+      const value = input.value.trim();
+      if(!value) return;
+      appendChatMessage(value, "user");
+      appendChatMessage("Escribiendo...", "bot");
+      const box = document.getElementById("chatBox");
+      const typing = box ? box.lastElementChild : null;
+      const answer = await glowReply(value);
+      if(typing && typing.parentElement){
+        typing.remove();
+      }
+      appendChatMessage(answer, "bot");
+      input.value = "";
+      input.focus();
+    }
+
+    function renderChat(){
+      content.innerHTML = `
+        <div class="mini-chat">
+          <div class="chat-box" id="chatBox"></div>
+          <div class="chat-controls">
+            <input id="chatInput" type="text" placeholder="Escribi tu consulta..." />
+            <button class="send" id="chatSendBtn" type="button">Enviar</button>
+            <button id="chatResetBtn" type="button">Reiniciar chat</button>
+          </div>
+        </div>
+      `;
+      const sendBtn = document.getElementById("chatSendBtn");
+      const resetBtn = document.getElementById("chatResetBtn");
+      const chatInput = document.getElementById("chatInput");
+      sendBtn.addEventListener("click", sendMiniChat);
+      resetBtn.addEventListener("click", resetMiniChat);
+      chatInput.addEventListener("keydown", (e) => {
+        if(e.key === "Enter"){
+          e.preventDefault();
+          sendMiniChat();
+        }
+      });
+      if(!chatStarted) resetMiniChat();
+    }
+
+    function renderRoulette(){
+      content.innerHTML = `
+        <div class="form-stack" style="margin-bottom:12px">
+          <p class="hint">Ingresa tu WhatsApp para girar Glow. Lo usamos para validar una jugada por dia y avisarte si ganas.</p>
+          <div class="field">
+            <label for="glowSpinPhone">WhatsApp</label>
+            <input id="glowSpinPhone" type="tel" placeholder="Ej: 2345123456" />
+          </div>
+        </div>
+        <div class="roulette-wrap">
+          <div class="roulette-pointer"></div>
+          <div class="roulette-wheel" id="rouletteWheel"></div>
+          <button class="roulette-btn" id="rouletteSpinBtn">Girar Glow</button>
+          <p class="hint" id="rouletteResult">Ingresa tu WhatsApp y despues toca "Girar Glow".</p>
+        </div>
+        <div class="cta">
+          <a href="#" onclick="showPanel('home'); return false;">Volver</a>
+        </div>
+      `;
+
+      const wheel = document.getElementById("rouletteWheel");
+      const spinBtn = document.getElementById("rouletteSpinBtn");
+      const resultEl = document.getElementById("rouletteResult");
+      const phoneInput = document.getElementById("glowSpinPhone");
+      if(!wheel || !spinBtn || !resultEl || !phoneInput) return;
+
+      spinBtn.onclick = () => {
+        if(rouletteSpinning) return;
+        const gate = registerGlowSpin(phoneInput.value);
+        if(!gate.ok){
+          resultEl.textContent = gate.message;
+          return;
+        }
+        rouletteSpinning = true;
+        spinBtn.disabled = true;
+        resultEl.textContent = "Girar Glow en curso...";
+
+        const index = Math.floor(Math.random() * ROULETTE_PRIZES.length);
+        const prize = ROULETTE_PRIZES[index];
+        const sectorSize = 360 / ROULETTE_PRIZES.length;
+        const min = index * sectorSize + 8;
+        const max = (index + 1) * sectorSize - 8;
+        const landing = min + Math.random() * (max - min);
+        const turns = 6 + Math.floor(Math.random() * 2);
+        const finalDeg = turns * 360 + (360 - landing);
+        wheel.style.transform = `rotate(${finalDeg}deg)`;
+
+        setTimeout(() => {
+          if(prize.win){
+            resultEl.innerHTML = `<b>GANASTE: ${escapeHtml(prize.label)}</b>`;
+            launchConfetti();
+          } else {
+            resultEl.textContent = "Gracias por participar. Intentalo de nuevo.";
+          }
+          spinBtn.disabled = false;
+          rouletteSpinning = false;
+          phoneInput.value = "";
+        }, 3200);
+      };
+    }
+
+    function launchConfetti(){
+      const layer = document.getElementById("confettiLayer");
+      if(!layer) return;
+
+      const colors = ["#22c55e", "#ff2d2d", "#f59e0b", "#3b82f6", "#a855f7", "#f97316"];
+      layer.innerHTML = "";
+
+      for(let i = 0; i < 120; i++){
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = `${Math.random() * 0.5}s`;
+        piece.style.animationDuration = `${2.4 + Math.random() * 1.2}s`;
+        piece.style.setProperty("--dx", `${Math.random() * 180 - 90}px`);
+        layer.appendChild(piece);
+      }
+
+      setTimeout(() => {
+        layer.innerHTML = "";
+      }, 3400);
+    }
+
+    function renderHome(){
+      content.innerHTML = `
+        <p class="hint home-brand">
+          <b>${escapeHtml(BUSINESS_NAME)}</b>
+        </p>
+      `;
+    }
+
+    function showPanel(which){
+      if(which === "home"){
+        panelTitle.textContent = "";
+        backBtn.style.display = "none";
+        restoreActions();
+        renderHome();
+        return;
+      }
+      backBtn.style.display = "inline-flex";
+
+      if(which === "ofertas"){
+        panelTitle.textContent = "Ofertas";
+        renderOffers();
+        focusPanel();
+      } else if(which === "horarios"){
+        panelTitle.textContent = "Horarios";
+        renderSchedule();
+        focusPanel();
+      } else if(which === "whatsapp"){
+        panelTitle.textContent = "WhatsApp";
+        renderWhatsapp();
+        focusPanel();
+      } else if(which === "ubicacion"){
+        panelTitle.textContent = "Ubicacion";
+        renderLocation();
+        focusPanel();
+      } else if(which === "sorteo"){
+        panelTitle.textContent = "Participar sorteo";
+        renderRaffle();
+        focusPanel();
+      } else if(which === "bases"){
+        panelTitle.textContent = "Bases y condiciones";
+        renderTerms();
+        focusPanel();
+      } else if(which === "ruleta"){
+        panelTitle.textContent = "Girar Glow";
+        renderRoulette();
+        focusPanel();
+      } else if(which === "chat"){
+        panelTitle.textContent = "Chatear con Glow";
+        renderChat();
+        focusPanel();
+      } else {
+        showPanel("home");
+      }
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    renderActionButtons();
+    showPanel("home");
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+ESTADO ACTUAL DEL SISTEMA GLOW
+
+Glow esta planteado como un sistema modular con tres capas principales:
+
+1. Panel Admin General / CEO
+2. Panel del Negocio
+3. Asistente Publico para clientes
+
+IDENTIDAD VISUAL
+- Paleta principal Glow: negro / rojo
+- Estetica comercial unificada en los paneles y el asistente
+- Naming consistente del modulo de juego: "Girar Glow"
+
+1. PANEL ADMIN GENERAL
+Archivo: panel_admin.html
+
+Funcion:
+- administrar negocios desde nivel CEO
+- activar o desactivar modulos por negocio
+- visualizar estructura escalable del producto
+
+Modulos contemplados:
+- Ofertas
+- Sorteos
+- Chat
+- WhatsApp
+- Horarios
+- Jugar
+- QR
+- Noticias y avisos
+- Reportes avanzados
+- Servicios
+- Turnos
+- Profesionales
+- Catalogos
+
+Objetivo:
+- permitir distintos tipos de negocio con distintos modulos activos
+
+2. PANEL DEL NEGOCIO
+Archivo: panel_negocio.html
+
+Funcion:
+- administrar el contenido y operaciones del negocio que contrata Glow
+
+Secciones actuales:
+- Inicio
+- Ofertas
+- Sorteos
+- Jugar
+- QR
+- Bases
+- Contactos
+- Chat
+- Reportes
+- Configuracion
+- Mi plan
+
+Capacidades actuales:
+- cargar ofertas
+- crear y administrar sorteos
+- editar bases y condiciones
+- generar pieza QR A4
+- configurar Girar Glow
+- ver contactos
+- revisar reportes
+- editar configuracion del negocio
+
+Configuracion de Girar Glow:
+- titulo del juego
+- regla principal
+- limite diario
+- horario habilitado
+- mensaje ganador
+- mensaje sin premio
+- regla por jugador
+- stock
+
+Mensaje definido para el juego:
+"Ingresa tu WhatsApp para girar Glow. Lo usamos para validar una jugada por dia y avisarte si ganas."
+
+3. ASISTENTE PUBLICO / CLIENTE
+Archivo: panel_cliente.html
+
+Funcion:
+- interfaz publica del negocio para clientes finales
+
+Modulos activos actuales:
+- Ver ofertas
+- Participar sorteo
+- Chatear con Glow
+- Bases y condiciones
+- Horarios
+- Jugar
+- Ubicacion
+- WhatsApp
+
+Arquitectura actual:
+- el asistente ya esta armado de forma modular
+- renderiza botones desde un array de modulos activos
+- se puede adaptar por tipo de negocio
+- ya tiene preparado el modulo "Noticias y avisos" para activarse mas adelante
+
+Juego:
+- el boton ya no habla de "ruleta"
+- ahora se llama "Girar Glow"
+- la rueda muestra una "G" en el centro
+- antes de jugar pide WhatsApp
+- en modo demo controla 1 giro por dia por numero dentro del navegador
+
+Mensaje actual:
+"Ingresa tu WhatsApp para girar Glow. Lo usamos para validar una jugada por dia y avisarte si ganas."
+
+ESTADO TECNICO
+Actualmente el sistema funciona como demo interactiva frontend.
+Ya esta definida:
+- la estructura del producto
+- la logica modular
+- la experiencia visual
+- los flujos principales
+
+Falta implementar para version real:
+- backend
+- base de datos
+- autenticacion
+- control real por negocio
+- persistencia de ofertas, sorteos, turnos, contactos y juego
+- activacion real de modulos desde base de datos
+- metricas reales
+- control real de un giro por dia por WhatsApp
+- integracion real entre panel admin, panel negocio y asistente publico
+
+CONCLUSION
+Glow ya tiene una base clara como producto modular.
+La maqueta funcional esta avanzada y permite evolucionar a una plataforma real multi-negocio.
